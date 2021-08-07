@@ -1,0 +1,26 @@
+.container {
+  height: 100%;
+  width: auto;
+}
+
+.side-nav {
+  padding-top: 20px;
+  background-color: #3f51b5;
+  width: 20%;
+}
+
+.active {
+  background-color: #232e6e;
+}
+
+main {
+  padding: 24px;
+}
+
+.nav-link {
+  height: 80px;
+}
+
+mat-list-item:focus {
+  background-color: #232e6e;
+}

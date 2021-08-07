@@ -1,0 +1,13 @@
+.wrapper {
+  margin-top: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.example-card {
+  width: 400px;
+
+  mat-form-field {
+    width: 100%;
+  }
+}

@@ -1,0 +1,109 @@
+<div class="wrapper">
+  <div>
+    <mat-form-field appearance="outline" style="margin-right: 48px;">
+      <mat-label>Semester</mat-label>
+      <mat-select (ngModelChange)="saveSemesterSeason(semesterSeason)" [(ngModel)]="semesterSeason">
+        <mat-option value="Spring">
+          Spring
+        </mat-option>
+        <mat-option value="Summer">
+          Summer
+        </mat-option>
+        <mat-option value="Fall">
+          Fall
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" style="margin-right: 48px;">
+      <mat-label>Year</mat-label>
+      <mat-select [(ngModel)]="semesterYear">
+        <mat-option [value]="2018">
+          2018
+        </mat-option>
+        <mat-option [value]="2019">
+          2019
+        </mat-option>
+        <mat-option [value]="2020">
+          2020
+        </mat-option>
+        <mat-option [value]="2021">
+          2021
+        </mat-option>
+        <mat-option [value]="2022">
+          2022
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button (click)="fetchSchedule('SE140983', semesterSeason, semesterYear)" color="primary" mat-icon-button style="height:
+    80%">
+      <mat-icon>search</mat-icon>
+    </button>
+  </div>
+  <div *ngIf="!scheduleWeeks" class="spinner">
+    <mat-spinner></mat-spinner>
+  </div>
+  <div *ngIf="scheduleWeeks">
+    <mat-divider style="margin-bottom: 16px;"></mat-divider>
+    <div style="display: flex; justify-content: center">
+      <mat-form-field appearance="outline" style="width: 60%;">
+        <mat-label>Week</mat-label>
+        <mat-select (ngModelChange)="scheduleWeek = findScheduleWeek(sessionWeek)" [(ngModel)]="sessionWeek">
+          <mat-option *ngFor="let week of scheduleWeeks"
+                      [value]="week.session">
+            {{week.startDay.toLocaleDateString()}} - {{week.endDay.toLocaleDateString()}} - session: {{week.session}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <mat-tab-group [(selectedIndex)]="dayOfWeek" animationDuration="0" mat-align-tabs="center">
+      <mat-tab *ngFor="let day of daysOfWeek; let i = index" [disabled]="shouldDisableScheduleDay(i, scheduleWeek)"
+               [label]="day"></mat-tab>
+    </mat-tab-group>
+    <mat-grid-list *ngIf="findScheduleDay(dayOfWeek); let scheduleDay" cols="3" rowHeight="480px">
+      <mat-grid-tile *ngFor="let slot of slots">
+        <mat-card *ngIf="findSubject(scheduleDay, slot); let subject" class="subject-card">
+          <mat-card-header>
+            <mat-card-title>{{subject.SubjectCode}}<span [ngStyle]="colorAttendanceStatus(subject.AttendanceStatus)"> - slot
+              {{subject.Slot}}</span>
+            </mat-card-title>
+            <mat-card-subtitle
+              [ngStyle]="colorAttendanceStatus(subject.AttendanceStatus)">{{getAttendanceStatus(subject.AttendanceStatus)}}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-divider inset="true"></mat-divider>
+          <mat-card-content>
+            <p style="padding: 0 16px; height: 48px; display: flex; align-items: center">
+              <mat-icon style="margin-right: 16px;">schedule</mat-icon>
+              <span style="color: gray">{{subject.SlotTime.replace('\\\\([^)]*\\\\)', '')}}</span>
+            </p>
+            <p style="padding: 0 16px; height: 48px; display: flex; align-items: center">
+              <mat-icon style="margin-right: 16px;">meeting_room</mat-icon>
+              <span style="color: gray">{{subject.RoomNo}}</span>
+            </p>
+            <p style="padding: 0 16px; height: 48px; display: flex; align-items: center">
+              <mat-icon style="margin-right: 16px;">tag</mat-icon>
+              <span style="color: gray">{{subject.SessionNo}}</span>
+            </p>
+            <p style="padding: 0 16px; height: 48px; display: flex; align-items: center">
+              <mat-icon style="margin-right: 16px;">class</mat-icon>
+              <span style="color: gray">{{subject.GroupName}}</span>
+            </p>
+            <p style="padding: 0 16px; height: 48px; display: flex; align-items: center">
+              <mat-icon style="margin-right: 16px;">account_circle</mat-icon>
+              <span style="color: gray">{{subject.Lecturer !== '' ? subject.Lecturer : 'Not assigned'}}</span>
+            </p>
+          </mat-card-content>
+          <mat-card-actions align="end">
+            <a [href]="subject.Material" mat-button mat-flat-button target="_blank">Material</a>
+            <button (click)="openMeet(subject.MeetURL)" *ngIf="subject.MeetURL" color="primary" mat-button
+                    mat-icon-button>
+              <mat-icon>videocam</mat-icon>
+            </button>
+          </mat-card-actions>
+        </mat-card>
+        <h3 *ngIf="!findSubject(scheduleDay, slot)" style="color: lightgray">Not have subject in slot
+          {{slot}}</h3>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+</div>

@@ -1,0 +1,87 @@
+<div class="wrapper">
+  <div>
+    <mat-form-field appearance="outline" style="margin-right: 48px;">
+      <mat-label>Semester</mat-label>
+      <mat-select (ngModelChange)="saveSemesterSeason(semesterSeason)" [(ngModel)]="semesterSeason">
+        <mat-option value="Spring">
+          Spring
+        </mat-option>
+        <mat-option value="Summer">
+          Summer
+        </mat-option>
+        <mat-option value="Fall">
+          Fall
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" style="margin-right: 48px;">
+      <mat-label>Year</mat-label>
+      <mat-select [(ngModel)]="semesterYear">
+        <mat-option [value]="2018">
+          2018
+        </mat-option>
+        <mat-option [value]="2019">
+          2019
+        </mat-option>
+        <mat-option [value]="2020">
+          2020
+        </mat-option>
+        <mat-option [value]="2021">
+          2021
+        </mat-option>
+        <mat-option [value]="2022">
+          2022
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button (click)="fetchScheduleExams('HCM','SE140983', semesterSeason, semesterYear)" color="primary" mat-icon-button
+            style="height:80%">
+      <mat-icon>search</mat-icon>
+    </button>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <mat-grid-list *ngIf="scheduleExams" cols="3" rowHeight="432px">
+    <mat-grid-tile *ngFor="let scheduleExam of scheduleExams">
+      <mat-card class="card">
+        <mat-card-header>
+          <mat-card-title>
+            {{scheduleExam.SubjectCode}}
+          </mat-card-title>
+          <mat-card-subtitle>{{formatDate(scheduleExam.Date)}}</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-divider inset></mat-divider>
+
+        <mat-card-content>
+          <p style="padding: 0 16px; height: 48px; display: flex; align-items: center">
+            <mat-icon style="margin-right: 16px;">meeting_room</mat-icon>
+            <span style="color: gray">{{scheduleExam.RoomNo}}</span>
+          </p>
+          <p style="padding: 0 16px; height: 48px; display: flex; align-items: center">
+            <mat-icon style="margin-right: 16px;">schedule</mat-icon>
+            <span style="color: gray">{{scheduleExam.Time}}</span>
+          </p>
+          <p style="padding: 0 16px; height: 48px; display: flex; align-items: center">
+            <mat-icon style="margin-right: 16px;">priority_high</mat-icon>
+            <span style="color: gray">{{scheduleExam.Note}}</span>
+          </p>
+          <p style="padding: 0 16px; height: 48px; display: flex; align-items: center">
+            <mat-icon style="margin-right: 16px;">assignment</mat-icon>
+            <span style="color: gray">{{scheduleExam.kythi}}</span>
+          </p>
+          <p style="padding: 0 16px; height: 48px; display: flex; align-items: center">
+            <mat-icon style="margin-right: 16px;">public</mat-icon>
+            <span style="color: gray">{{formatDate(scheduleExam.DateofPublication)}}</span>
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <h2 *ngIf="!scheduleExams" style="color: lightgray; text-align: center">Not have schedule exam in
+    {{semesterSeason}}
+    {{semesterYear}}</h2>
+
+</div>

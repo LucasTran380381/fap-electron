@@ -1,0 +1,54 @@
+<div class="wrapper">
+  <mat-card *ngIf="user" class="example-card">
+    <mat-card-header>
+      <div mat-card-avatar class="example-header-image"></div>
+      <mat-card-title>{{user.Fullname}}</mat-card-title>
+      <mat-card-subtitle>{{user.RollNumber}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-divider inset></mat-divider>
+    <mat-card-content>
+      <mat-list>
+        <div mat-subheader>Profile</div>
+        <mat-list-item>
+          <mat-icon mat-list-icon>cake</mat-icon>
+          <h4 mat-line>{{user.DateOfBirth | date:'d/MM/YYYY'}}</h4>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon mat-list-icon>male</mat-icon>
+          <h4 mat-line>{{user.Gender ? 'Male' : 'Female'}}</h4>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon mat-list-icon>call</mat-icon>
+          <h4 mat-line>{{user.MobilePhone}}</h4>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon mat-list-icon>home</mat-icon>
+          <h4 mat-line>{{user.Address}}</h4>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon mat-list-icon>alternate_email</mat-icon>
+          <h4 mat-line>{{user.Email}}</h4>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon mat-list-icon>fact_check</mat-icon>
+          <h4 mat-line>{{user.IDCard}}</h4>
+        </mat-list-item>
+
+        <mat-divider inset></mat-divider>
+
+        <div mat-subheader>Academic</div>
+        <mat-list-item >
+          <mat-icon mat-list-icon>school</mat-icon>
+          <h4 mat-line>{{user.Major}}</h4>
+        </mat-list-item>
+        <mat-list-item >
+          <mat-icon mat-list-icon>tag</mat-icon>
+          <h4 mat-line>{{user.CurrentTermNo}}</h4>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <button mat-icon-button color="primary" (click)="logout()"><mat-icon>logout</mat-icon></button>
+    </mat-card-actions>
+  </mat-card>
+</div>

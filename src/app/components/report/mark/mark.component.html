@@ -1,0 +1,81 @@
+<div class="wrapper">
+  <div>
+    <mat-form-field appearance="outline" style="margin-right: 48px;">
+      <mat-label>Semester</mat-label>
+      <mat-select (ngModelChange)="saveSemesterSeason(semesterSeason)" [(ngModel)]="semesterSeason">
+        <mat-option value="Spring">
+          Spring
+        </mat-option>
+        <mat-option value="Summer">
+          Summer
+        </mat-option>
+        <mat-option value="Fall">
+          Fall
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" style="margin-right: 48px;">
+      <mat-label>Year</mat-label>
+      <mat-select [(ngModel)]="semesterYear">
+        <mat-option [value]="2018">
+          2018
+        </mat-option>
+        <mat-option [value]="2019">
+          2019
+        </mat-option>
+        <mat-option [value]="2020">
+          2020
+        </mat-option>
+        <mat-option [value]="2021">
+          2021
+        </mat-option>
+        <mat-option [value]="2022">
+          2022
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button (click)="fetchStudentMark('HCM','SE140983', semesterSeason, semesterYear)" color="primary" mat-icon-button
+            style="height:80%">
+      <mat-icon>search</mat-icon>
+    </button>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <mat-grid-list *ngIf="marks" cols="3">
+    <mat-grid-tile *ngFor="let mark of marks">
+      <mat-card class="mark-card">
+        <mat-card-header>
+
+          <mat-card-title>
+            {{mark.SubjectCode}}
+          </mat-card-title>
+          <mat-card-subtitle [ngStyle]="getColorStatus(mark.Status)">{{mark.Status}}</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-divider inset></mat-divider>
+
+        <mat-card-content>
+          <p style="padding: 0 16px; height: 48px; display: flex; align-items: center">
+            <mat-icon style="margin-right: 16px;">grade</mat-icon>
+            <span style="color: gray">{{mark.AverageMark}}</span>
+          </p>
+          <p style="padding: 0 16px; height: 48px; display: flex; align-items: center">
+            <mat-icon style="margin-right: 16px;">meeting_room</mat-icon>
+            <span style="color: gray">{{mark.ClassName}}</span>
+          </p>
+        </mat-card-content>
+
+        <mat-card-actions align="end">
+          <button (click)="openMarkDetail(mark)" color="primary" mat-icon-button>
+            <mat-icon>info</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <h2 *ngIf="!marks" style="color: lightgray; margin-top: 16px; text-align: center">
+    Not have report in semester {{semesterSeason}} {{semesterYear}}
+  </h2>
+</div>
